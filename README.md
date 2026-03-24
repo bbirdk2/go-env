@@ -7,9 +7,12 @@ B2B SaaS 및 마이크로서비스 아키텍처 환경에서 빠르고 안전하
 ## 🚀 Installation
 
 ```bash
-go get [github.com/bbirdk2/go-env](https://github.com/bbirdk2/go-env)
+go get github.com/bbirdk2/go-env(https://github.com/bbirdk2/go-env)
+```
 
+## 📂 Directory Architecture
 
+```bash
 go-env/
 ├── go.mod
 ├── LICENSE
@@ -27,3 +30,43 @@ go-env/
 └── cast/               # 🔄 [확장 포인트 3] 타입 변환 유틸리티
     ├── cast.go         # GetInt, GetBool 등 형변환 및 기본값(Fallback) 지원
     └── cast_test.go
+```
+
+## 💡 구조 설계 철학 (Design Principles)
+```bash
+Facade Pattern (env.go): 사용자는 내부의 복잡한 패키지 구조를 알 필요 없이 최상단의 env.go를 통해 직관적으로 기능을 호출합니다.
+
+Open-Closed Principle (parser/): 기존 코드를 수정하지 않고도 새로운 설정 파일 포맷(예: config.yaml)을 지원할 수 있도록 파싱 로직을 분리했습니다.
+
+Type Casting (cast/): 실무에서 번거로운 string -> int/bool 변환 로직을 내재화하여 비즈니스 로직의 피로도를 낮춥니다.
+```
+
+## 💻 Quick Start
+```bash
+package main
+
+import (
+	"fmt"
+	"github.com/bbirdk2/go-env(https://github.com/bbirdk2/go-env)"
+)
+
+func main() {
+	// 1. .env 파일 로드
+	err := env.Load(".env")
+	if err != nil {
+		fmt.Println("Warning: .env 파일을 찾을 수 없습니다.")
+	}
+
+	// 2. 환경변수 읽기 (기본값 설정 가능)
+	apiKey := env.Get("API_KEY", "default-key-123")
+	
+	// 3. 타입 변환하여 읽기 (향후 cast 패키지 구현 시)
+	// port := env.GetInt("PORT", 8080)
+	// isDebug := env.GetBool("DEBUG_MODE", false)
+
+	fmt.Printf("Loaded API Key: %s\n", apiKey)
+}
+```
+
+## 📄 License
+This project is licensed under the MIT License.
